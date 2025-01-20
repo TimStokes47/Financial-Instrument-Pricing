@@ -14,7 +14,8 @@ private:
     std::shared_ptr<double> d;
 public:
     C1(std::shared_ptr<double> value) : d(value) {}
-    virtual ~C1() { std::cout << "\nC1 destructor\n";}
+    virtual ~C1() { std::cout << "C1 destructor\n";}
+
     void print() const { std::cout << "Value " << *d; }
 };
 
@@ -23,7 +24,7 @@ private:
     std::shared_ptr<double> d;
 public:
     C2(std::shared_ptr<double> value) : d(value) {}
-    virtual ~C2() { std::cout << "\nC2 destructor\n";}
+    virtual ~C2() { std::cout << "C2 destructor\n";}
     void print() const { std::cout << "Value " << *d; }
 };
 
@@ -62,6 +63,33 @@ int main(){
     }
 
     // 2 (b)
+    std::shared_ptr<double> ptr = std::make_shared<double>(1.0);
+    {
+        C1 c1(ptr);
+        C2 c2(ptr);
+        std::cout << "Number of shared owners of ptr: " << ptr.use_count() << "\n";
+    }
+    std::cout << "Number of shared owners of ptr: " << ptr.use_count() << "\n";
 
+    // 2 (d)
+    {
+        std::shared_ptr<double> sp1 = std::make_shared<double>(1.0);
+        std::shared_ptr<double> sp2 = std::move(sp1);
+        std::cout << "sp1 is the unique owner of a resource: " << std::boolalpha << sp1.unique() << "\n";
+        std::cout << "sp2 is the unique owner of a resource: " << std::boolalpha << sp2.unique() << "\n";
+        std::swap(sp1, sp2);
+        sp2.reset();
+    }
 
+    {
+        // Define auto_ptr pointers instead of raw pointers
+        std::unique_ptr <double> d(new double (1.0));
+        // Dereference
+        *d = 2.0;
+        // Change ownership of auto_ptr
+        // (after assignment, d is undefined)
+        std::unique_ptr <double> d2 = std::move(d);
+        *d2 = 3.0;
+        std::cout << "Auto values: " << *d.get() << ", " << *d2.get();
+    }
 }
