@@ -27,8 +27,19 @@ int main(){
     std::shared_ptr<double> ptr6(ptr2);
 
     std::cout << "ptr1 shared: " << ptr1.use_count() << "\n"; // 2
-    std::cout << "ptr2 shared: " << ptr2.use_count() << "\n"; // 0
+    std::cout << "ptr2 shared: " << ptr2.use_count() << "\n"; // 2
     std::cout << "ptr3 shared: " << ptr3.use_count() << "\n"; // 1
     std::cout << "ptr4 shared: " << ptr4.use_count() << "\n"; // 2
     std::cout << "ptr5 shared: " << ptr5.use_count() << "\n"; // 0
+
+    std::weak_ptr<double> wp;
+    std::cout << "wp is expired: " << std::boolalpha << wp.expired() << "\n";
+
+    // Event notification (Observer) pattern and weak pointers
+std::shared_ptr<double> spA(new double (3.1415));
+std::weak_ptr<double> wA(spA);
+std::weak_ptr<double> wB(spA);
+spA.reset();
+std::cout << "wA expired: " << wA.expired() << std::endl;
+std::cout << "wB expired: " << wB.expired() << std::endl;
 }

@@ -1,2 +1,0 @@
-add_executable(SmartPointers src/smartPointers.cpp)
-add_executable(SmartPointerExercises src/smartPointerExercises.cpp)
